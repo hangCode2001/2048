@@ -2,6 +2,7 @@
 2048小游戏（带动画效果）
 所用语言html、css、JavaScript
 通过上下左右进行控制，实现了移动、合并等功能
+[线上测试地址](https://2048.web.cloudendpoint.cn/)
 ![图片效果](./pic/1.png)
 
 ## 实现功能
