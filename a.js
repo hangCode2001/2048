@@ -174,7 +174,7 @@ function moveNumAction(pos,pos2,start,end,dire,mul=false)//分别代表位置，
   
 }
 
-//判断移动位置
+//实际移动后的数组变化
 function movePos(dire){
   //arr存储新的地图
   let arr=new Array(4);
@@ -325,7 +325,7 @@ function movePos(dire){
     }
   }
 }
-
+//判断移动位置
 document.onkeydown = function(event){
   let e = event || window.event || arguments.callee.caller.arguments[0];
   //上
