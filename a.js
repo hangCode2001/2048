@@ -8,16 +8,18 @@ let moveBool=0;
 //初始化
 let score=0;
 let best=0;
+let scoreDom=document.querySelectorAll('.score');
 function init(){
   //初始化每一个位置的数字和颜色
   for(let i=0;i<16;i++){
     m[i]=0;
   }
+  best=localStorage.getItem("best")
+  if(!best)best=0;
+  scoreDom[1].innerHTML=best.toString()
 }
+init()
 
-function changeScore(num){
-  
-}
 
 
 //新建一个游戏
@@ -26,6 +28,7 @@ function newGame(){
     m[i]=0;
   }
   score=0;
+  scoreDom[0].innerHTML=score.toString()
   newNum(randomNumber(),parseInt(Math.random()*2)==0?2:4)
   newNum(randomNumber(),parseInt(Math.random()*2)==0?2:4)
 }
@@ -35,7 +38,24 @@ function newNum(pos,num){
   m[pos]=num;
   newNumAction(pos,num)
 }
-
+//随机新生成一个数字,返回一个随机位置（0-15）
+function randomNumber(){
+  //arr保存空位的位置
+  let arr=[]
+  //先检测有哪些空位，并把这些空位插入到arr中
+  for(let i=0;i<16;i++){
+    if(m[i]==0)arr.push(i);
+  }
+  //没有空位则游戏结束
+  if(arr.length==0){
+    alert("游戏结束，您的得分是"+score)
+    best=Math.max(best,score)
+    localStorage.setItem("best",best)
+    scoreDom[1].innerHTML=best.toString()
+    return -1;
+  }
+  return arr[parseInt(Math.random()*arr.length)]
+}
 //新的数值动画
 function newNumAction(pos,num){
   if(pos==-1)return
@@ -84,20 +104,13 @@ function newNumAction(pos,num){
   
 }
 
-//随机新生成一个数字,返回一个随机位置（0-15）
-function randomNumber(){
-  //arr保存空位的位置
-  let arr=[]
-  for(let i=0;i<16;i++){
-    if(m[i]==0)arr.push(i);
-  }
-  if(arr.length==0){
-    alert("游戏结束，您的得分是",)
-    return -1;
-  }
-  return arr[parseInt(Math.random()*arr.length)]
+//增加分数
+function addScore(num){
+  score+=num;
+  let score1=document.querySelectorAll('.score')
+  score1[0].innerHTML=score.toString()
 }
-init()
+
 
 //移动的动画
 function moveNumAction(pos,pos2,start,end,dire,mul=false)//分别代表位置，起点的行列号，终点的行列号，方向
@@ -116,7 +129,6 @@ function moveNumAction(pos,pos2,start,end,dire,mul=false)//分别代表位置，
   if(start==end)return;
   //起点到终点的距离
   let sum = Math.abs(end-start)*110;
-  let sum2=0;
   let li = document.querySelectorAll("li")
   let cloli = li[pos].cloneNode(true)
   cloli.style=nodeCss
@@ -151,6 +163,7 @@ function moveNumAction(pos,pos2,start,end,dire,mul=false)//分别代表位置，
       document.body.removeChild(cloli)
       if(mul){
         newNum(pos2,num*2)
+        addScore(num*2)
       }
       moveBool--;
       clearInterval(inte)
